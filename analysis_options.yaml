@@ -2,5 +2,10 @@
 include: package:austerity/analysis_options.yaml
 
 linter:
- 
   rules:
+
+
+analyzer:
+  errors: 
+    public_member_api_docs: ignore
+    diagnostic_describe_all_properties: ignore

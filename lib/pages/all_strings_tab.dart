@@ -19,9 +19,12 @@ class StringsTab extends StatelessWidget {
             ? ListView(
                 children: value.data!
                     .map(
-                      (e) => StringListItem(
-                        favoritableString: e,
-                        onTap: () => onToggle(e..isFavorite = !e.isFavorite),
+                      (favoritableString) => StringListItem(
+                        favoritableString: favoritableString,
+                        onTap: () => onToggle(
+                          favoritableString
+                            ..isFavorite = !favoritableString.isFavorite,
+                        ),
                       ),
                     )
                     .toList(),

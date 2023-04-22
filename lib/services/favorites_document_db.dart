@@ -1,12 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favorite_strings_flutter/favoritable_string.dart';
 import 'package:firestore_fakes/firebase_firestore_fake.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FavoritesDocumentDb {
   FirebaseFirestore firestore = FirebaseFirestoreFake.stateful();
 
   Future<void> initialise() async {
-    var collection = firestore.collection('strings');
+    final collection = firestore.collection('strings');
 
     await collection.doc('1').set(<String, dynamic>{
       'id': 1,
@@ -36,8 +36,8 @@ class FavoritesDocumentDb {
     });
   }
 
-  void update(FavoritableString favoritableString) {
-    firestore
+  Future<void> update(FavoritableString favoritableString) async {
+    await firestore
         .collection('strings')
         .doc(favoritableString.id.toString())
         .set(<String, dynamic>{
@@ -47,23 +47,23 @@ class FavoritesDocumentDb {
     });
   }
 
-  Stream<List<FavoritableString>> all() {
-    return firestore
-        .collection('strings')
-        .where('isFavorite', isNull: false)
-        .snapshots()
-        .map((event) =>
+  Stream<List<FavoritableString>> all() => firestore
+      .collection('strings')
+      .where('isFavorite', isNull: false)
+      .snapshots()
+      .map(
+        (event) =>
             event.docs.map((e) => FavoritableString.fromJson(e.data())).toList()
-              ..sort((a, b) => a.id.compareTo(b.id)));
-  }
+              ..sort((a, b) => a.id.compareTo(b.id)),
+      );
 
-  Stream<List<FavoritableString>> favorites() {
-    return firestore
-        .collection('strings')
-        .where('isFavorite', isEqualTo: true)
-        .snapshots()
-        .map((event) =>
+  Stream<List<FavoritableString>> favorites() => firestore
+      .collection('strings')
+      .where('isFavorite', isEqualTo: true)
+      .snapshots()
+      .map(
+        (event) =>
             event.docs.map((e) => FavoritableString.fromJson(e.data())).toList()
-              ..sort((a, b) => a.id.compareTo(b.id)));
-  }
+              ..sort((a, b) => a.id.compareTo(b.id)),
+      );
 }

@@ -7,10 +7,12 @@ Future<void> main() async {
   final favoritesDocumentDb = FavoritesDocumentDb();
   await favoritesDocumentDb.initialise();
 
-  runApp(StringsPage(
-    onUpdate: (favoritableString) =>
-        favoritesDocumentDb.update(favoritableString),
-    favoritedStrings: favoritesDocumentDb.favorites(),
-    allStrings: favoritesDocumentDb.all(),
-  ));
+  runApp(
+    StringsPage(
+      onUpdate: (favoritableString) async =>
+          favoritesDocumentDb.update(favoritableString),
+      favoritedStrings: favoritesDocumentDb.favorites(),
+      allStrings: favoritesDocumentDb.all(),
+    ),
+  );
 }

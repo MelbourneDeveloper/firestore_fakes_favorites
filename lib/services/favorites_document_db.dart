@@ -47,23 +47,22 @@ class FavoritesDocumentDb {
     });
   }
 
-  Stream<List<FavoritableString>> all() => firestore
-      .collection('strings')
-      .where('isFavorite', isNull: false)
-      .snapshots()
-      .map(
-        (event) =>
-            event.docs.map((e) => FavoritableString.fromJson(e.data())).toList()
-              ..sort((a, b) => a.id.compareTo(b.id)),
-      );
+  Stream<List<FavoritableString>> all() =>
+      _toFavoritableStrings(_strings().where('isFavorite', isNull: false));
 
-  Stream<List<FavoritableString>> favorites() => firestore
-      .collection('strings')
-      .where('isFavorite', isEqualTo: true)
-      .snapshots()
-      .map(
-        (event) =>
-            event.docs.map((e) => FavoritableString.fromJson(e.data())).toList()
+  Stream<List<FavoritableString>> favorites() =>
+      _toFavoritableStrings(_strings().where('isFavorite', isEqualTo: true));
+
+  CollectionReference<Map<String, dynamic>> _strings() =>
+      firestore.collection('strings');
+
+  Stream<List<FavoritableString>> _toFavoritableStrings(
+    Query<Map<String, dynamic>> where,
+  ) =>
+      where.snapshots().map(
+            (event) => event.docs
+                .map((e) => FavoritableString.fromJson(e.data()))
+                .toList()
               ..sort((a, b) => a.id.compareTo(b.id)),
-      );
+          );
 }

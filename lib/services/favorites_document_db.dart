@@ -3,10 +3,10 @@ import 'package:favorite_strings_flutter/favoritable_string.dart';
 import 'package:firestore_fakes/firebase_firestore_fake.dart';
 
 class FavoritesDocumentDb {
-  FirebaseFirestore firestore = FirebaseFirestoreFake.stateful();
+  final FirebaseFirestore _firestore = FirebaseFirestoreFake.stateful();
 
   Future<void> initialise() async {
-    final collection = firestore.collection('strings');
+    final collection = _firestore.collection('strings');
 
     await collection.doc('1').set(<String, dynamic>{
       'id': 1,
@@ -37,7 +37,7 @@ class FavoritesDocumentDb {
   }
 
   Future<void> update(FavoritableString favoritableString) async {
-    await firestore
+    await _firestore
         .collection('strings')
         .doc(favoritableString.id.toString())
         .set(<String, dynamic>{
@@ -54,7 +54,7 @@ class FavoritesDocumentDb {
       _toFavoritableStrings(_strings().where('isFavorite', isEqualTo: true));
 
   CollectionReference<Map<String, dynamic>> _strings() =>
-      firestore.collection('strings');
+      _firestore.collection('strings');
 
   Stream<List<FavoritableString>> _toFavoritableStrings(
     Query<Map<String, dynamic>> where,

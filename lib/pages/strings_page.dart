@@ -1,5 +1,5 @@
 import 'package:favorite_strings_flutter/favoritable_string.dart';
-import 'package:favorite_strings_flutter/pages/all_strings_tab.dart';
+import 'package:favorite_strings_flutter/pages/strings_tab.dart';
 import 'package:flutter/material.dart';
 
 class StringsPage extends StatefulWidget {
